@@ -110,7 +110,6 @@
     const fetchBtn = document.getElementById('fetch-btn');
 
     async function getCat() {
-      // Set loading state
       fetchBtn.disabled = true;
       catImage.style.display = 'none';
       statusText.style.display = 'block';
@@ -123,12 +122,17 @@
         const data = await response.json();
         const imageUrl = data[0].url;
 
-        // Display the image once it finishes loading
         catImage.onload = () => {
           statusText.style.display = 'none';
           catImage.style.display = 'block';
           fetchBtn.disabled = false;
         };
+
+        catImage.onerror = () => {
+          statusText.textContent = 'Image failed to render. Click to try another.';
+          fetchBtn.disabled = false;
+        };
+
         catImage.src = imageUrl;
 
       } catch (error) {
@@ -138,7 +142,6 @@
       }
     }
 
-    // Load a cat automatically when the page opens
     window.addEventListener('DOMContentLoaded', getCat);
   </script>
 
